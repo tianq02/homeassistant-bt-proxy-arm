@@ -17,6 +17,8 @@ privileged:
 options:
   device: "/dev/ttyS1"
   protocol: "h4"
+  passive_scan: true
 schema:
   device: str
   protocol: str
+  passive_scan: bool

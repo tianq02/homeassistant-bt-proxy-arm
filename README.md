@@ -163,7 +163,7 @@ If this repo is hosted on GitHub, add it as a custom add-on repository:
 3. Add the repository URL (e.g. `https://github.com/fifthvertex/bt-proxy`)
 4. Find **BT HCI Proxy** and install it
 
-The add-on defaults to `/dev/ttyS1` with protocol `h4`. These can be changed in the add-on's **Configuration** tab if needed.
+The add-on defaults to `/dev/ttyS1` with protocol `h4` and passive scanning enabled. These can be changed in the add-on's **Configuration** tab if needed.
 
 ### 4. Verify
 
@@ -190,7 +190,7 @@ Home Assistant's Bluetooth integration should transition from `setup_retry` to `
 
 ## Notes
 
-- **Passive scanning**: The latency added by the proxy path may prevent active BLE scanning from working reliably. If Home Assistant warns about passive scanning, enable the passive scanning option in the relevant integration. Passive scanning is sufficient for most BLE devices.
+- **Passive scanning**: The latency added by the proxy path may prevent active BLE scanning from working reliably. The add-on enables passive scanning on the adapter by default (via `btmgmt`). You can disable this by setting `passive_scan: false` in the add-on configuration. You may also need to enable the passive scanning option in the relevant Home Assistant integration. Passive scanning is sufficient for most BLE devices.
 
 - **HAOS read-only filesystem**: HAOS uses a read-only root filesystem (erofs), so `btattach` can't be persisted as a systemd unit inside the VM. The HA Add-on (`ha-addon/`) solves this by running `btattach` in a managed Docker container that persists across reboots.
 
