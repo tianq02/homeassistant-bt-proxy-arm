@@ -1,3 +1,3 @@
-name: BT Proxy Add-ons
-url: https://github.com/nlothian/homeassistant-bt-proxy
-maintainer: Nick Lothian
+name: BT Proxy Add-ons arm
+url: https://github.com/tianq02/homeassistant-bt-proxy-arm
+maintainer: Nick Lothian, tianq02
