@@ -11,12 +11,13 @@ boot: auto
 init: false
 devices:
   - /dev/ttyS1
+  - /dev/ttyAMA1
 privileged:
   - SYS_MODULE
   - NET_ADMIN
 host_dbus: true
 options:
-  device: "/dev/ttyS1"
+  device: "/dev/ttyAMA1"
   protocol: "h4"
   passive_scan: true
   adapter_name_prefix: "BT Proxy for"
