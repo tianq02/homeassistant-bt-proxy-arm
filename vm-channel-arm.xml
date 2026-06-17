@@ -8,9 +8,7 @@
 
   Note: Uses a serial port (not virtio-serial) because btattach
   requires a tty device that supports termios ioctls.
-  tianq: arm soc doesn't has a ISA bus, try pl011
-  you may see logs like below, that's completely normal
-  hci-proxy: Connected to virtio-serial at /run/bt-hci-proxy.sock
+  tianq: arm soc doesn't has a ISA bus, use pl011 instead
 -->
 
 <serial type='unix'>

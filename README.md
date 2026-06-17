@@ -129,6 +129,8 @@ The proxy parses HCI packet headers to determine packet boundaries (each type ha
 
 Edit the VM XML (`virsh edit <vm-name>`) and add the contents of `vm-channel.xml` inside the `<devices>` section, after the existing `<serial type='pty'>` block. Then restart the VM:
 
+> for arm machines, use `vm-channel-arm.xml` instead
+
 ```sh
 sudo virsh shutdown <vm-name>
 # wait for it to stop
@@ -167,7 +169,9 @@ If this repo is hosted on GitHub, add it as a custom add-on repository:
 3. Add the repository URL (e.g. `https://github.com/nlothian/homeassistant-bt-proxy`)
 4. Find **BT HCI Proxy** and install it
 
-The add-on defaults to `/dev/ttyS1` with protocol `h4` and passive scanning enabled. These can be changed in the add-on's **Configuration** tab if needed.
+The add-on defaults to `/dev/ttyS1` with protocol `h4` and passive scanning enabled. For arm machines, please use `/dev/ttyAMA1` instead. These can be changed in the add-on's **Configuration** tab if needed.
+
+> If you need to use a custom tty other than the default two, you should modify `devices` section in `bt-hci-proxy/config.yaml` and do a local add-on install. 
 
 ### 4. Verify
 
@@ -207,8 +211,8 @@ Home Assistant's Bluetooth integration should transition from `setup_retry` to `
 | Proxy fails to open HCI socket | `systemctl status bluetooth` — must be stopped |
 | "Address already in use" on HCI bind | Another process has the adapter; stop bluetooth.service |
 | UNIX socket missing on host | VM must be running; check `virsh list` |
-| `/dev/ttyS1` missing in VM | Verify serial XML was added correctly |
-| btattach fails with ioctl error | Ensure using `/dev/ttyS1` (serial port), not a virtio-ports device |
+| `/dev/ttyS1` or `/dev/ttyAMA1` missing in VM | Verify corresponding serial XML was added correctly |
+| btattach fails with ioctl error | Ensure using `/dev/ttyS1` (x86 isa serial) or `/dev/ttyAMA1` (arm pl011 serial), not a virtio-ports device |
 | Add-on shows "Resource busy" | A previous btattach left the line discipline attached; the add-on detects hci0 and monitors it — this is normal |
 | Add-on shows "hci0 disappeared" | The add-on will auto-restart and re-attach; check that hci-proxy is running on the host |
 | HA still in setup_retry | Restart the Bluetooth integration after hci0 appears |
