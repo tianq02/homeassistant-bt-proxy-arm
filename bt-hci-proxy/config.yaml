@@ -1,5 +1,5 @@
 name: "BT HCI Proxy arm"
-version: "0.1.0"
+version: "0.1.1"
 slug: "bt-hci-proxy-arm"
 description: "Attaches a Bluetooth HCI UART device (btattach) for use with the bt-proxy host-side service"
 url: "https://github.com/tianq02/homeassistant-bt-proxy-arm"
@@ -9,20 +9,18 @@ arch:
 startup: system
 boot: auto
 init: false
-devices:
-  - /dev/ttyS1
-  - /dev/ttyAMA1
+uart: true
 privileged:
   - SYS_MODULE
   - NET_ADMIN
 host_dbus: true
 options:
-  device: "/dev/ttyAMA1"
+  device: "/dev/ttyS1"
   protocol: "h4"
   passive_scan: true
   adapter_name_prefix: "BT Proxy for"
 schema:
-  device: str
+  device: "device(subsystem=tty)"
   protocol: str
   passive_scan: bool
   adapter_name_prefix: str?
