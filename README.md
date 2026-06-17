@@ -2,7 +2,7 @@
 
 A proxy that forwards Bluetooth HCI packets from a Linux host's Bluetooth adapter to a Home Assistant OS (HAOS) VM, enabling full Bluetooth support without USB passthrough.
 
-[![Open your Home Assistant instance and add this service.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fnlothian%2Fhomeassistant-bt-proxy%2F)
+[![Open your Home Assistant instance and add this service.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Ftianq02%2Fhomeassistant-bt-proxy-arm%2F)
 
 Note: You **MUST ADD THE PROXY TO THE HOST MANUALLY**. [See below](#2-install-the-proxy-on-the-host).
 
@@ -128,6 +128,7 @@ The proxy parses HCI packet headers to determine packet boundaries (each type ha
 ### 1. Add a serial port to the VM
 
 Edit the VM XML (`virsh edit <vm-name>`) and add the contents of `vm-channel.xml` inside the `<devices>` section, after the existing `<serial type='pty'>` block. Then restart the VM:
+> for arm machines, use `vm-channel-arm.xml` instead
 
 ```sh
 sudo virsh shutdown <vm-name>
@@ -207,8 +208,8 @@ Home Assistant's Bluetooth integration should transition from `setup_retry` to `
 | Proxy fails to open HCI socket | `systemctl status bluetooth` — must be stopped |
 | "Address already in use" on HCI bind | Another process has the adapter; stop bluetooth.service |
 | UNIX socket missing on host | VM must be running; check `virsh list` |
-| `/dev/ttyS1` missing in VM | Verify serial XML was added correctly |
-| btattach fails with ioctl error | Ensure using `/dev/ttyS1` (serial port), not a virtio-ports device |
+| `/dev/ttyS1` or `/dev/ttyAMA1` missing in VM | Verify corresponding serial XML was added correctly |
+| btattach fails with ioctl error | Ensure using `/dev/ttyS1` (x86 isa serial port) or `/dev/ttyAMA1` (arm pl011 serial), not a virtio-ports device |
 | Add-on shows "Resource busy" | A previous btattach left the line discipline attached; the add-on detects hci0 and monitors it — this is normal |
 | Add-on shows "hci0 disappeared" | The add-on will auto-restart and re-attach; check that hci-proxy is running on the host |
 | HA still in setup_retry | Restart the Bluetooth integration after hci0 appears |
